@@ -1,5 +1,5 @@
 # trivia-train
-A trivia game app developed using the <a href="https://opentdb.com/api_config.php">Open Trivia Database API</a>. The json from the api is parsed into a list of questions and we offer a selection of 3 questions for the player to answer each round. Answer as many questions as you can before losing all 3 lives.
+A trivia game app developed using the <a href="https://opentdb.com/api_config.php">Open Trivia Database API</a>. The JSON from the API is parsed into a list of questions and we offer a selection of 3 questions for the player to answer each round. Answer as many questions as you can before losing all 3 lives.
 
 The game can be installed from the <a href="https://play.google.com/store/apps/details?id=com.CoolGames.signal">Google Play Store</a>
 
