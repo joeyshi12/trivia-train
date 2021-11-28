@@ -1,4 +1,4 @@
-package com.example.trivia;
+package com.coolgames.trivia;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,34 +8,34 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.trivia.model.QuizRunner;
+import trivia.R;
 
 public class ScoreActivity extends AppCompatActivity {
-    QuizRunner quizRunner;
+    QuizState quizState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
-
         Intent intent = getIntent();
-        quizRunner = intent.getParcelableExtra("quizRunner");
+        quizState = intent.getParcelableExtra(getString(R.string.quizStateKey));
 
         TextView textView = findViewById(R.id.score);
-        textView.setText("Score: " + quizRunner.getScore());
+        textView.setText(getString(R.string.score, quizState.getScore()));
 
-        SharedPreferences mPrefs = getSharedPreferences("highscore", 0);
-        int highscore = mPrefs.getInt("highscore", 0);
+        String highscoreKey = getString(R.string.highscoreKey);
+        SharedPreferences mPrefs = getSharedPreferences(highscoreKey, 0);
+        int highscore = mPrefs.getInt(highscoreKey, 0);
 
         textView = findViewById(R.id.highScore);
-        textView.setText("Highscore: " + quizRunner.getHighScore());
+        textView.setText(getString(R.string.highscore, quizState.getCurrentHighscore()));
 
         SharedPreferences.Editor mEditor = mPrefs.edit();
-        mEditor.putInt("highscore", quizRunner.getHighScore()).commit();
+        mEditor.putInt(highscoreKey, quizState.getCurrentHighscore()).apply();
     }
 
     public void back(View view) {
-        Intent intent = new Intent(this, StartActivity.class);
+        Intent intent = new Intent(this, StartMenuActivity.class);
         startActivity(intent);
     }
 

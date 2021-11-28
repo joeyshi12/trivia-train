@@ -1,4 +1,4 @@
-package com.example.trivia;
+package com.coolgames.trivia;
 
 import android.content.Context;
 

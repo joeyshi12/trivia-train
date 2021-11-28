@@ -1,4 +1,4 @@
-package com.example.trivia;
+package com.coolgames.trivia;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,13 +9,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.trivia.model.Question;
-import com.example.trivia.model.QuizRunner;
+import trivia.R;
 
 public class AnswerActivity extends AppCompatActivity {
     private Question question;
-    private QuizRunner quizRunner;
-    private int ansIdx;
+    private QuizState quizState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +21,8 @@ public class AnswerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_answer);
 
         Intent intent = getIntent();
-        question = intent.getParcelableExtra("question");
-        quizRunner = intent.getParcelableExtra("quizRunner");
+        question = intent.getParcelableExtra(getString(R.string.questionKey));
+        quizState = intent.getParcelableExtra(getString(R.string.quizStateKey));
 
         TextView textView = findViewById(R.id.lives);
         assert question != null;
@@ -34,7 +32,7 @@ public class AnswerActivity extends AppCompatActivity {
         RadioButton button;
 
         if (question.getIsMultiple()) {
-            ansIdx = (int) (Math.random() * 4);
+            int ansIdx = (int) (Math.random() * 4);
             if (ansIdx == 0) {
                 button = new RadioButton(this);
                 button.setText(question.getCorrectAnswer());
@@ -84,17 +82,14 @@ public class AnswerActivity extends AppCompatActivity {
             return;
         }
 
-
-        quizRunner.mark(question, id);
-
-        if (quizRunner.isGameOver()) {
-            Intent intent = new Intent(this, ScoreActivity.class);
-            intent.putExtra("quizRunner", quizRunner);
-            startActivity(intent);
+        quizState.mark(question, id);
+        Intent intent;
+        if (quizState.isGameOver()) {
+            intent = new Intent(this, ScoreActivity.class);
         } else {
-            Intent intent = new Intent(this, SelectActivity.class);
-            intent.putExtra("quizRunner", quizRunner);
-            startActivity(intent);
+            intent = new Intent(this, SelectQuestionActivity.class);
         }
+        intent.putExtra(getString(R.string.quizStateKey), quizState);
+        startActivity(intent);
     }
 }

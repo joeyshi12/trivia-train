@@ -1,4 +1,4 @@
-package com.example.trivia.model;
+package com.coolgames.trivia;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,26 +11,19 @@ import java.util.ArrayList;
 
 public class Question implements Parcelable {
     private final String category;
-    private final boolean isMultiple;
-    private int difficulty;
-    private String question;
+    private final boolean isMultipleChoice;
+    private final int difficulty;
+    private final String question;
     private final String correctAnswer;
     private ArrayList<String> incorrectAnswers;
 
     public Question(JSONObject jsonQuestion) throws JSONException {
         category = jsonQuestion.getString("category");
-        isMultiple = jsonQuestion.getString("type").equals("multiple");
-        String diff = jsonQuestion.getString("difficulty");
-        if (diff.equals("easy")) {
-            difficulty = 0;
-        } else if (diff.equals("medium")) {
-            difficulty = 1;
-        } else {
-            difficulty = 2;
-        }
+        isMultipleChoice = jsonQuestion.getString("type").equals("multiple");
+        difficulty = toDifficultyLevel(jsonQuestion.getString("difficulty"));
         question = cleanString(jsonQuestion.getString("question"));
         correctAnswer = cleanString(jsonQuestion.getString("correct_answer"));
-        if (isMultiple) {
+        if (isMultipleChoice) {
             incorrectAnswers = new ArrayList<>();
             JSONArray jsonIncorrectQuestions = jsonQuestion.getJSONArray("incorrect_answers");
             incorrectAnswers.add(cleanString(jsonIncorrectQuestions.getString(0)));
@@ -41,7 +34,7 @@ public class Question implements Parcelable {
 
     protected Question(Parcel in) {
         category = in.readString();
-        isMultiple = in.readByte() != 0;
+        isMultipleChoice = in.readByte() != 0;
         difficulty = in.readInt();
         question = in.readString();
         correctAnswer = in.readString();
@@ -75,7 +68,7 @@ public class Question implements Parcelable {
     }
 
     public boolean getIsMultiple() {
-        return isMultiple;
+        return isMultipleChoice;
     }
 
     public int getDifficulty() {
@@ -108,10 +101,18 @@ public class Question implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(category);
-        parcel.writeByte((byte) (isMultiple ? 1 : 0));
+        parcel.writeByte((byte) (isMultipleChoice ? 1 : 0));
         parcel.writeInt(difficulty);
         parcel.writeString(question);
         parcel.writeString(correctAnswer);
         parcel.writeStringList(incorrectAnswers);
+    }
+
+    private int toDifficultyLevel(String difficultyLabel) {
+        switch (difficultyLabel) {
+            case "easy": return 0;
+            case "medium": return 1;
+            default: return 2;
+        }
     }
 }

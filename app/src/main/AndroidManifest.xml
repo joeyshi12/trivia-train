@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.trivia">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="trivia">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,16 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.trivia.ScoreActivity"></activity>
+        <activity android:name="com.coolgames.trivia.ScoreActivity" />
         <activity
-            android:name="com.example.trivia.AnswerActivity"
+            android:name="com.coolgames.trivia.AnswerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.trivia.SelectActivity"
+            android:name="com.coolgames.trivia.SelectQuestionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.trivia.StartActivity"
-            android:screenOrientation="portrait">
+            android:name="com.coolgames.trivia.StartMenuActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
